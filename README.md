@@ -16,7 +16,7 @@
 ## Installation
 
 1. Download the latest version of the Pipeliner add-on from this repository.
-2. In Blender, go to `Edit > Preferences > Add-ons > Install`.
+2. In Blender, go to `Edit > Preferences > Add-ons > Install`. **(NOTE: Open Blender in Administrator mode while installing)**
 3. Select the `.zip` file of the add-on and click `Install Add-on`.
 4. Enable the add-on in the preferences window.
 
