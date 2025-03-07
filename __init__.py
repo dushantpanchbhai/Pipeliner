@@ -121,19 +121,12 @@ def import_obj(filepath):
     existing_objects = set(bpy.data.objects.keys())
 
     # Import the obj file
-    bpy.ops.wm.obj_import(filepath=filepath)
+    bpy.ops.wm.obj_import(
+        filepath=filepath,
+    )
 
     # Get the names of newly imported objects
     imported_objects = [obj for obj in bpy.context.selected_objects if obj.name not in existing_objects]
-
-    # Create an empty object
-    empty_name = os.path.basename(filepath).replace('.obj', '') + "_root"
-    empty = bpy.data.objects.new(empty_name, None)
-    bpy.context.collection.objects.link(empty)
-
-    # Parent all imported objects to the empty object
-    for obj in imported_objects:
-        obj.parent = empty
 
 def import_fbx(filepath):
     """Import an FBX file into Blender, parent parts to an empty, and mark as assets."""
@@ -142,19 +135,14 @@ def import_fbx(filepath):
     existing_objects = set(bpy.data.objects.keys())
 
     # Import the FBX file
-    bpy.ops.import_scene.fbx(filepath=filepath)
+    bpy.ops.import_scene.fbx(
+        filepath=filepath,
+        automatic_bone_orientation=True,  # Critical for armatures
+        use_custom_normals= True 
+    )
 
     # Get the names of newly imported objects
     imported_objects = [obj for obj in bpy.context.selected_objects if obj.name not in existing_objects]
-
-    # Create an empty object
-    empty_name = os.path.basename(filepath).replace('.fbx', '') + "_root"
-    empty = bpy.data.objects.new(empty_name, None)
-    bpy.context.collection.objects.link(empty)
-
-    # Parent all imported objects to the empty object
-    for obj in imported_objects:
-        obj.parent = empty
 
 def import_gltf(filepath):
     """Import a GLTF file into Blender, parent parts to an empty, and mark as assets."""
@@ -164,32 +152,12 @@ def import_gltf(filepath):
     existing_objects = set(bpy.data.objects.keys())
 
     # Import the GLTF file
-    bpy.ops.import_scene.gltf(filepath=filepath)
+    bpy.ops.import_scene.gltf(
+        filepath=filepath
+    )
 
     # Get the names of newly imported objects
     imported_objects = [obj for obj in bpy.context.selected_objects if obj.name not in existing_objects]
-
-    # Determine the name for the empty object
-    if os.path.basename(filepath).endswith(".glb"):
-        empty_name = os.path.basename(filepath).replace('.glb', '') + "_root"
-    elif os.path.basename(filepath).endswith(".gltf"):
-        empty_name = os.path.basename(filepath).replace('.gltf', '') + "_root"
-
-    # Ensure we have at least one imported object to get the collection
-    if imported_objects:
-        # Get the collection of the first imported object
-        collection = imported_objects[0].users_collection[0]
-
-        # Create an empty object in the same collection
-        empty = bpy.data.objects.new(empty_name, None)
-        collection.objects.link(empty)
-
-        # Parent all imported objects to the empty object
-        for obj in imported_objects:
-            obj.parent = empty
-
-    else:
-        print("No objects were imported.")
 
 def import_usd(filepath):
     """Import a USD file into Blender, parent parts to an empty, and mark as assets."""
@@ -199,7 +167,9 @@ def import_usd(filepath):
     existing_objects = set(bpy.data.objects.keys())
 
     # Import the GLTF file
-    bpy.ops.wm.usd_import(filepath=filepath)
+    bpy.ops.wm.usd_import(
+        filepath=filepath
+    )
 
     # Get the names of newly imported objects
     imported_objects = [obj for obj in bpy.context.selected_objects if obj.name not in existing_objects]
